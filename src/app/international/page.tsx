@@ -32,7 +32,7 @@ export default function InternationalPage() {
         </p>
         <p className="text-sand mb-8">
           You&apos;ll find our full product line available with international shipping options
-          calculated at checkout.
+          calculated at checkout. Please see link below which directs you to our Etsy Store.
         </p>
 
         <a
