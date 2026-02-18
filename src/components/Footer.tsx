@@ -69,6 +69,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/international" className="text-offwhite hover:text-sand transition-colors">
+                  International Customers
+                </Link>
+              </li>
+              <li>
                 <Link href="/privacy" className="text-offwhite hover:text-sand transition-colors">
                   Privacy Policy
                 </Link>
