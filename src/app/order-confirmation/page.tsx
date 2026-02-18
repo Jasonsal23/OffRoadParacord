@@ -123,8 +123,8 @@ function OrderConfirmationContent() {
             <div>
               <p className="text-offwhite font-medium">Shipping Notification</p>
               <p className="text-sand text-sm">
-                Once shipped, you&apos;ll receive tracking information via email. Delivery typically
-                takes 3-5 business days via USPS.
+                Once shipped, you&apos;ll receive a shipping confirmation email with your USPS
+                tracking number. Delivery typically takes 3-5 business days.
               </p>
             </div>
           </div>
@@ -186,19 +186,13 @@ function OrderConfirmationContent() {
       )}
 
       {/* Actions */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Link
-          href={`/order-status?orderNumber=${orderNumber}`}
-          className="flex-1 flex items-center justify-center gap-2 bg-forest-light border border-sage hover:border-paracord text-offwhite font-bold px-6 py-3 rounded-lg transition-colors"
-        >
-          Track Your Order
-          <ArrowRight className="w-4 h-4" />
-        </Link>
+      <div className="text-center">
         <Link
           href="/shop"
-          className="flex-1 flex items-center justify-center gap-2 bg-paracord hover:bg-paracord-light text-offwhite font-bold px-6 py-3 rounded-lg transition-colors"
+          className="inline-flex items-center justify-center gap-2 bg-paracord hover:bg-paracord-light text-offwhite font-bold px-8 py-3 rounded-lg transition-colors"
         >
           Continue Shopping
+          <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
 

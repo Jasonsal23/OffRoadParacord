@@ -49,11 +49,6 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/order-status" className="text-offwhite hover:text-sand transition-colors">
-                  Track Order
-                </Link>
-              </li>
-              <li>
                 <Link href="/faq" className="text-offwhite hover:text-sand transition-colors">
                   FAQ
                 </Link>
