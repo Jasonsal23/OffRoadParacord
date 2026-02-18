@@ -209,16 +209,18 @@ export async function POST(request: NextRequest) {
       status: payment.status,
       receiptUrl: payment.receiptUrl,
     });
-  } catch (error) {
-    console.error('Checkout error:', error);
+  } catch (error: unknown) {
+    console.error('Checkout error:', JSON.stringify(error, Object.getOwnPropertyNames(error as object), 2));
 
-    // Handle Square API errors
-    if (error && typeof error === 'object' && 'errors' in error) {
-      const squareError = error as { errors: Array<{ detail: string; code: string }> };
-      const errorDetail = squareError.errors?.[0];
-      const errorMessage = errorDetail?.detail || 'Payment failed';
+    // Handle Square API errors (SDK v44 format)
+    const err = error as { errors?: Array<{ detail?: string; code?: string; field?: string; category?: string }>; message?: string; statusCode?: number; body?: string };
 
-      // Common error codes
+    if (err.errors && Array.isArray(err.errors)) {
+      const errorDetail = err.errors[0];
+      const errorMessage = errorDetail?.detail || err.message || 'Payment failed';
+
+      console.error('Square API error details:', JSON.stringify(err.errors, null, 2));
+
       if (errorDetail?.code === 'CARD_DECLINED') {
         return NextResponse.json(
           { success: false, error: 'Your card was declined. Please try a different card.' },
@@ -236,8 +238,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: errorMessage }, { status: 400 });
     }
 
+    // Handle other error formats from SDK v44
+    if (err.body) {
+      try {
+        const bodyError = JSON.parse(err.body);
+        console.error('Square API body error:', bodyError);
+        const detail = bodyError.errors?.[0]?.detail || 'Payment processing failed';
+        return NextResponse.json({ success: false, error: detail }, { status: 400 });
+      } catch {
+        // body wasn't JSON
+      }
+    }
+
+    const message = err.message || 'An unexpected error occurred. Please try again.';
     return NextResponse.json(
-      { success: false, error: 'An unexpected error occurred. Please try again.' },
+      { success: false, error: message },
       { status: 500 }
     );
   }
